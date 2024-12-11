@@ -13,6 +13,7 @@ First, I will explore various features in the data set. Then I will analyze thei
 Last but not least, I will pay special attention on the cause of power outages. More detailly, I will build a model that predicts the cause of a power outage using existing information. This model is expected to help energy companies better prevent power outages and improve their efficiency.
 
 The orginal data set contains 1534 rows and 55 columns, but only these features are related to our study:
+
 | Column | Description |
 | ----------- | ----------- |
 |YEAR|Year when the outage event occurred|
@@ -44,6 +45,7 @@ The orginal data set contains 1534 rows and 55 columns, but only these features 
 6. I add two features to `df`: `HOUR` derived from `OUTAGE.START` that represents the hour when outages start, and `DAY` derived from `HOUR` that represents whether outages start at day or night.
 
 Here are the first 5 rows of some columns of my cleaned `df`:
+
 |   YEAR |   MONTH | CAUSE.CATEGORY     |   CUSTOMERS.AFFECTED | OUTAGE.START        |   HOUR | DAY   |
 |-------:|--------:|:-------------------|---------------------:|:--------------------|-------:|:------|
 |   2011 |       7 | severe weather     |                70000 | 2011-07-01 17:00:00 |     17 | True  |
@@ -55,12 +57,42 @@ Here are the first 5 rows of some columns of my cleaned `df`:
 
 ### Univariate Analysis
 First, I want to see how many outages occur in each month.
+
 <iframe
   src="assets/fig1.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
+
+As we can see, the number of power outages occur in winter and summer is relatively higher. This fits with our understanding that energy consumption increases in summer and winter due the demand for air conditioning and heating.
+
+### Bivariate Analysis
+I analyze how the number of customers affected is distributed over cause category.
+
+<iframe
+  src="assets/fig3.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The graph suggests that power outage caused by severe weather or system operability disruption tend to affect much more customers.
+
+### Interesting Aggregates
+I groupee by climate region and cause category to see if there are any difference in the distributions of causes over climate region(some columns are hidden).
+
+| CLIMATE.REGION     |   equipment failure |   intentional attack |   public appeal |   severe weather |   system operability disruption |
+|:-------------------|--------------------:|---------------------:|----------------:|-----------------:|--------------------------------:|
+| Central            |                   7 |                   38 |               2 |              134 |                              11 |
+| East North Central |                   3 |                   20 |               2 |              104 |                               3 |
+| Northeast          |                   5 |                  135 |               4 |              176 |                              14 |
+| Northwest          |                   2 |                   89 |               2 |               29 |                               4 |
+| South              |                   9 |                   28 |              42 |              112 |                              27 |
+| Southeast          |                   4 |                    9 |               5 |              116 |                              16 |
+| Southwest          |                   5 |                   64 |               1 |               10 |                               9 |
+| West               |                  21 |                   31 |               9 |               70 |                              41 |
+| West North Central |                   1 |                    4 |               2 |                4 |                             nan |
 
 ## Assessment of Missingness
 
