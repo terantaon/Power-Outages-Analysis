@@ -14,27 +14,28 @@ Last but not least, I will pay special attention on the cause of power outages. 
 
 The orginal data set contains 1534 rows and 55 columns, but only these features are related to our study:
 
-| Column | Description |
-| ----------- | ----------- |
-|YEAR|Year when the outage event occurred|
-|MONTH|Month when the outage event occurred|
-|POSTAL.CODE|Postal code of the U.S. states|
-|NERC.REGION|The North American Electric Reliability Corporation (NERC) regions involved in the outage event|
-|CLIMATE.REGION|U.S. Climate regions as specified by National Centers for Environmental Information (nine climatically consistent regions in continental U.S.A.)|
-|ANOMALY.LEVEL|The oceanic El Niño/La Niña (ONI) index referring to the cold and warm episodes by season.|
-|OUTAGE.START.DATE|The day of the year when the outage event started|
-|OUTAGE.START.TIME|The time of the day when the outage event started|
+| Column                | Description                                                    |
+|:--------------------- |:-------------------------------------------------------------- |
+|YEAR                   |Year when the outage event occurred                             |
+|MONTH                  |Month when the outage event occurred                            |
+|POSTAL.CODE            |Postal code of the states                                       |
+|NERC.REGION            |NERC regions involved in the outage event                       |
+|CLIMATE.REGION         |U.S. Climate regions                                            |
+|ANOMALY.LEVEL          |The oceanic El Niño/La Niña (ONI) index                         |
+|OUTAGE.START.DATE      |The day of the year when the outage event started               |
+|OUTAGE.START.TIME      |The time of the day when the outage event started               |
 |OUTAGE.RESTORATION.DATE|The day of the year when power was restored to all the customers|
 |OUTAGE.RESTORATION.TIME|The time of the day when power was restored to all the customers|
-|CAUSE.CATEGORY|Categories of all the events causing the major power outages|
-|OUTAGE.DURATION|Duration of outage events (in minutes)|
-|DEMAND.LOSS.MW|Amount of peak demand lost during an outage event (in Megawatt)|
-|CUSTOMERS.AFFECTED|Number of customers affected by the power outage event|
-|TOTAL.PRICE|Average monthly electricity price in the U.S. state (cents/kilowatt-hour)|
-|TOTAL.SALES|Total electricity consumption in the U.S. state (megawatt-hour)|
-|TOTAL.CUSTOMERS|Annual number of total customers served in the U.S. state|
-|POPULATION|Population in the U.S. state in a year|
-|POPPCT_URBAN|Percentage of the total population of the U.S. state represented by the urban population (in %)|
+|CAUSE.CATEGORY         |Categories of all the events causing the major power outages    |
+|OUTAGE.DURATION        |Duration of outage events                                       |
+|DEMAND.LOSS.MW         |Amount of peak demand lost during an outage event               |
+|CUSTOMERS.AFFECTED     |Number of customers affected by the power outage event          |
+|TOTAL.PRICE            |Average monthly electricity price in the state                  |
+|TOTAL.SALES            |Total electricity consumption in the state                      |
+|TOTAL.CUSTOMERS        |Annual number of total customers served in the state            |
+|POPULATION             |Population in the state in a year                               |
+|POPPCT_URBAN           |Percentage of the urban population in state                     |
+
 ## Data Cleaning and Exploratory Data Analysis
 ### Data Cleaning
 1. In the original excel file, the column names are on row 5, the data set starts at row 7, and the first column is useless. Thus after reading the file as a dataframe `df`, I use row 5 as the header and drop the first row.
@@ -57,7 +58,6 @@ Here are the first 5 rows of some columns of my cleaned `df`:
 
 ### Univariate Analysis
 First, I want to see how many outages occur in each month.
-
 <iframe
   src="assets/fig1.html"
   width="800"
@@ -68,7 +68,6 @@ As we can see, the number of power outages occur in winter and summer is relativ
 
 ### Bivariate Analysis
 I analyze how the number of customers affected is distributed over cause category.
-
 <iframe
   src="assets/fig3.html"
   width="800"
@@ -94,6 +93,23 @@ I groupee by climate region and cause category to see if there are any differenc
 
 ## Assessment of Missingness
 
+### NMAR Analysis
+One of the column that may be NMAR is DEMAND.LOSS.MW. I googled that the local utility companies are responsible for collecting data of the loss of energy during a major power outage. These companies may have specific rules for data collection, for instance, they may not report data for relatively small sized outages. If they did not report the energy loss in a power outage, this value would be missing. Therefore, an additional data I might want is the name of the local utility companies. Then I can perform a permutation test to see if DEMAND.LOSS.MW is MAR, depending on my new data.
+
+### Missingness Dependency
+I tested if the missingness of OUTAGE.RESTORATION depend on MONTH and CLIMATE.REGION.
+
+1.
+**Null Hypothesis**: The distribution of Month is the same when Outage Restoration is missing vs not missing.
+**Alternate Hypothesis**: The distribution of Month is different when Outage Restoration is missing vs not missing.
+**Test Statistic**: TVD
+<iframe
+  src="assets/fig5.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+I got an observed statistic of 0.143. After running the permutation test, I got a p-value of 0.194. Therefore, I fail to reject the null hypothesis in favor of the alternate hypothesis. This result suggests that the distribution of Month is different when Outage Restoration is missing vs not missing, which means that the missingness of Outage Restoration is not dependent on Month.
 
 ## Hypothesis Testing
 H0: The mean duration of outages in California is equal to the mean duration of outages nationwide.  
