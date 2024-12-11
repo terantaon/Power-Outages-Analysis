@@ -64,7 +64,6 @@ First, I want to see how many outages occur in each month.
   height="600"
   frameborder="0"
 ></iframe>
-
 As we can see, the number of power outages occur in winter and summer is relatively higher. This fits with our understanding that energy consumption increases in summer and winter due the demand for air conditioning and heating.
 
 ### Bivariate Analysis
@@ -76,7 +75,6 @@ I analyze how the number of customers affected is distributed over cause categor
   height="600"
   frameborder="0"
 ></iframe>
-
 The graph suggests that power outage caused by severe weather or system operability disruption tend to affect much more customers.
 
 ### Interesting Aggregates
